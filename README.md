@@ -100,6 +100,16 @@ data/allen_data/25_micron_resolution/
 └── ccf_2017/annotation_25.nrrd
 ```
 
+The fitted posteriors from our own inference run are also included, one pickle
+per round for all 25 rounds:
+
+```
+data/sbi/pkls/posterior_round_{1..25}_mouse0_trial0.pkl
+```
+
+These let you reproduce every figure in the SBI stage **without** re-running the
+inference, which takes days (see step 3).
+
 ---
 
 ## Recreating the main experiment
@@ -169,6 +179,22 @@ Toggle `generate_pipeline`, `save_video`, `generate_median_pipeline` and
 
 ### 3. Inference (environment B)
 
+> **⚠️ This step is very expensive — expect days, not hours.**
+> It runs 25 rounds × 10 000 simulations = **250 000 forward simulations** of the
+> Wilson–Cowan model, plus a density-estimator training pass after every round.
+> Runtime depends heavily on your hardware (a GPU for the JAX simulator makes a
+> large difference), and the process must stay alive throughout — run it under
+> `tmux`, `screen`, or a cluster job rather than an interactive shell.
+>
+> **You do not need to run it to reproduce the figures.** The posteriors for all
+> 25 rounds are already in `data/sbi/pkls/`, so you can go straight to
+> [Producing the plots](#producing-the-plots). Only run this if you want to
+> refit — e.g. for a different mouse, trial, pipeline, or parameter space.
+>
+> Note that it overwrites `data/sbi/pkls/posterior_round_<r>_mouse<m>_trial<t>.pkl`
+> for whatever `MOUSE_IDX` / `TRIAL_IDX` is set in `config.py`. Back up the
+> provided pickles first if you are refitting mouse 0 / trial 0.
+
 ```bash
 python -m src.sbi.run_sbi
 ```
@@ -182,7 +208,8 @@ summary vector defined in `src/sbi/sbi_utils/summary.py` (FC, delayed FC at
 histogram). After each round the posterior is truncated with a density
 thresholder and used as the proposal for the next.
 
-Writes one pickle per round:
+Writes one pickle per round (overwriting the provided ones for the same
+mouse/trial):
 
 ```
 data/sbi/pkls/posterior_round_<r>_mouse<m>_trial<t>.pkl
@@ -316,6 +343,7 @@ data/
 ├── pipeline_in_steps/        <n>.npy  — one snapshot per cumulative pipeline step
 ├── median_pipelines/         <n>.npy  — per-region median traces (SBI target)
 ├── sbi/pkls/                 posterior_round_<r>_mouse<m>_trial<t>.pkl
+│                             (rounds 1–25 provided; run_sbi overwrites them)
 ├── mse/                      mse_mouse<m>_trial<t>.npz
 └── compare/                  default output dir for plot_individual figures
 
@@ -363,4 +391,3 @@ src/
         ├── summary.py            summary vector assembly
         └── inference.py          SNPE rounds + posterior saving
 ```
-
