@@ -325,7 +325,6 @@ def save_median_pipeline_video(
                 contour=contour,
             )
 
-    save_path = PROJECT_ROOT / "videos" / "median" / f"{pipeline}.mp4"
     _save_video(
         data=pixel_data,
         i=i,
@@ -333,7 +332,7 @@ def save_median_pipeline_video(
         mice=mice,
         trials=trials,
     )
-    print(f"Saved median pipeline video to: {save_path}")
+    print(f"Saved median pipeline video to: {PROJECT_ROOT / "videos" / f"{i}_Median.mp4"}")
 
 
 def _save_video(data, i, fps=25, step="", mice=[1], trials=[[1]]):
@@ -380,7 +379,7 @@ def main(
                 step_labels=pipeline[3],
             )
         if generate_median_pipeline:
-            save_median_pipeline_data(pipeline=2)
+            save_median_pipeline_data(pipeline=[pipeline[0]])
             if save_median_video:
                 save_median_pipeline_video(
                     pipeline=pipeline[0],
