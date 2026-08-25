@@ -104,7 +104,7 @@ if __name__ == "__main__":
         target_freqs=config.TARGET_FREQS,
         dfc_delays=config.DFC_DELAYS,
         project_root=config.ROOT,
-        num_samples=5_000,
+        num_samples=100_000,
         pipeline=config.PIPELINE,
-        round=1,
+        round=25,
     )

@@ -246,7 +246,6 @@ def save_median_pipeline_data(pipeline):
         else print("that can't be right, first region should be 0!")
     )
     data = np.load(PROJECT_ROOT / "data" / "pipelines" / f"{pipeline}.npy")
-    print(data.shape)
     median_activity_per_region = activity_per_pixel_to_activity_per_region(
         data=data,
         region_idxs=region_idxs,
@@ -332,7 +331,8 @@ def save_median_pipeline_video(
         mice=mice,
         trials=trials,
     )
-    print(f"Saved median pipeline video to: {PROJECT_ROOT / "videos" / f"{i}_Median.mp4"}")
+    save_path = PROJECT_ROOT / "videos" / f"{i}_Median.mp4"
+    print(f"Saved median pipeline video to: {save_path}")
 
 
 def _save_video(data, i, fps=25, step="", mice=[1], trials=[[1]]):
@@ -379,7 +379,7 @@ def main(
                 step_labels=pipeline[3],
             )
         if generate_median_pipeline:
-            save_median_pipeline_data(pipeline=[pipeline[0]])
+            save_median_pipeline_data(pipeline=pipeline[0])
             if save_median_video:
                 save_median_pipeline_video(
                     pipeline=pipeline[0],
