@@ -80,8 +80,6 @@ def save_median_pipeline_video(label, data):
         mice=[1],
         trials=[[1]],
     )
-    save_path = PROJECT_ROOT / "videos" / f"simulation_Median.mp4"
-    print(f"Saved median pipeline video to: {save_path}")
 
 
 def _save_video(data, i, fps=25, mice=[1], trials=[[1]]):

@@ -282,6 +282,27 @@ psd_empirical.png             psd_simulated.png             psd_delta.png
 psd_average.png               value_distribution.png
 ```
 
+### Median activity videos from a parameter set (environment B)
+
+```bash
+python -m src.sbi.video_from_simulation
+```
+
+Simulates the Wilson–Cowan model for the two `theta` dicts in `main()` —
+`theta_map` (paste the MAP estimate from `pairplot` here) and `theta_tilde` (a
+perturbed variant)
+
+The label passed to `save_median_pipeline_video` becomes the filename, so edit
+the dicts and labels in `main()` to render any other parameter set.
+
+→ `videos/MAP.mp4`
+→ `videos/Perturbed.mp4`
+
+> Needs step 1 (`pixel_brain_map_mouse1.npy`, `id_acronym_lookup.csv`) and step 2
+> (`contour_mask1.npy`) to have run first. It also imports the grid video writer
+> from `src/pipeline/video.py`, so environment B needs `imageio[ffmpeg]` and
+> `Pillow` installed alongside the SBI stack.
+
 ### Per-pixel time series through the pipeline (environment A)
 
 Two steps — dump the intermediates, then plot.
@@ -355,7 +376,8 @@ figures/
 
 videos/
 ├── <i>_<Step>.mp4            one grid video per pipeline step
-└── <i>_Median.mp4            region-median reconstruction
+├── <i>_Median.mp4            region-median reconstruction
+└── <label>.mp4               simulated median activity (MAP.mp4, Perturbed.mp4)
 ```
 
 ---
@@ -383,6 +405,7 @@ src/
     ├── mse.py / mse_plot.py      posterior-predictive MSE + figures
     ├── pairplot.py               prior/posterior pairplot + MAP
     ├── plot_individual.py        empirical vs. simulated figures
+    ├── video_from_simulation.py  median activity videos from a theta dict
     └── sbi_utils/
         ├── config.py             paths, parameter space, all hyperparameters
         ├── data.py               region mapping + observed summary loading
