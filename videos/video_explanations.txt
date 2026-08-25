@@ -1,0 +1,10 @@
+Pipeline videos:
+0_masked.mp4: Raw data with ROI and region boundary mask applied
+1_Fluorescence.mp4: Masked data's fluorescence signal
+2_Denoised.mp4: Fluorescence signal denoised using oasis library
+3_Filtered.mp4: Denoised signal bandpass filtered (0.5 - 4 Hz)
+4_Normalized.mp4: Filtered signal min-max normalized
+
+Simulation videos:
+MAP.mp4: Simulation given the MAP estimate (single most probable parameters) after 25th round of SNPE
+Perturbed.mp4: MAP estimate manually perturbed to create shorter, less frequent up-states
